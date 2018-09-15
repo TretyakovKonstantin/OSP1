@@ -25,8 +25,7 @@ fi
 "2" ) 
 echo "Введите путь к каталогу:" 
 read dir || exit 0
-cd -- "$dir" 
-2>> $log_file || echo $err_msg >&2
+cd -- "$dir" 2>> $log_file || echo $err_msg >&2
 ;;
 "3" ) 
 echo "Введите имя файла:" 
@@ -34,21 +33,23 @@ read file || exit 0
 touch -- "$file" 2>> $log_file || echo $err_msg >&2
 ;;
 "4" ) 
-echo "Введите путь к файлу:" read file || exit 0
-chmod a+w -- "$file" 2>> $log_file || echo $err_msg >&2
+echo "Введите путь к файлу:" 
+read file || exit 0
+chmod -- a+w "$file" 2>> $log_file || echo $err_msg >&2
 ;;
 "5" ) 
 echo "Введите путь к файлу:" 
 read file || exit 0
 if [ -f "$file" ] 
 then 
-echo "rm: $file (yes/no)?" read confirmation || exit 0
+echo "rm: $file (yes/no)?" 
+read confirmation || exit 0
 if [ $confirmation = yes ] 
 then 
-rm -- "$file" 2>> $log_file || echo $err_msg >&2 fi 
+rm -- "$file" 2>> $log_file || echo $err_msg >&2 
+fi 
 else 
 echo "Файл не найден." >&2
-fi
 fi
 ;;
 "6" ) 

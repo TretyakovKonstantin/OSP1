@@ -1,18 +1,18 @@
 #!/bin/bash
 
+#Вывести список имён файлов в текущем каталоге, являющихся косвенными ссылками на указанный файл. Список отсортировать по времени изменения метаинформации
 if [[ $# -eq 0 ]] 
 then echo "Ошибка - не предоставлено аргументов" >&2
 exit 1
 fi
-declare -a list
-list="$1"/*
-for file in $list
+
+source="$1"
+list=(`find . -type l | tr '\n' ' '`)
+for file in ${list[@]}
 do
-	check=$(find "$file"/* -type d -prune 2>/dev/null) #"$file"/* - because solaris doesn't have -maxdepth
-	if [[ $? -eq 0 ]] 
-	then
-		if [[ -z $check ]]
-		then echo "$file"
-		fi
+	file=`echo $file | sed 's%^./%%'`
+	check=`ls -l "$file" | sed 's/^.* -> //'`
+	if [[ $check == $source ]] 
+	then echo "$file"
 	fi
 done
